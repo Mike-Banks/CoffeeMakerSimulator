@@ -8,6 +8,8 @@ import android.widget.TextView;
 
 import com.example.mikebanks.coffeemaker.Model.CoffeeMaker;
 
+import java.util.Timer;
+
 public class MainActivity extends AppCompatActivity {
 
     private TextView txtBoilerStatus;
@@ -17,11 +19,11 @@ public class MainActivity extends AppCompatActivity {
     private TextView txtBrewingStatus;
     private TextView txtPotMessage;
     private TextView txtMessage;
-
     private Button btnStartBrewing;
     private Button btnPot;
 
     private CoffeeMaker coffeeMaker;
+    private Timer brewingTimer;
 
     private View.OnClickListener clickListener = new View.OnClickListener() {
         @Override
@@ -47,6 +49,7 @@ public class MainActivity extends AppCompatActivity {
         setupViews();
 
         coffeeMaker = new CoffeeMaker();
+        brewingTimer = new Timer();
 
     }
 
@@ -71,6 +74,7 @@ public class MainActivity extends AppCompatActivity {
 
     private void startBrewing() throws InterruptedException {
         coffeeMaker.startBrewing();
+        
     }
 
     private void potClick() {
