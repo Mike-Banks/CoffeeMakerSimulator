@@ -8,6 +8,8 @@ import android.widget.TextView;
 
 import com.example.mikebanks.coffeemaker.Model.CoffeeMaker;
 
+import java.util.concurrent.TimeUnit;
+
 public class MainActivity extends AppCompatActivity {
 
     private TextView txtBoilerStatus;
@@ -60,21 +62,16 @@ public class MainActivity extends AppCompatActivity {
         btnPot.setOnClickListener(clickListener);
     }
 
-    private void startBrewing() {
-        while (coffeeMaker.getBoiler().getBoilerSensor().getBoilerEmpty() == false) {
-
-        }
+    private void startBrewing() throws InterruptedException {
+        coffeeMaker.startBrewing();
     }
 
     private void potClick() {
-        if (coffeeMaker.getWarmerPlate().getWarmerPlateSensor().isPotGone() == false) {
-            coffeeMaker.getWarmerPlate().getWarmerPlateSensor().setPotGone(true);
-            coffeeMaker.getWarmerPlate().stopWarming();
+        if (coffeeMaker.potInteraction().equals("STOP")) {
 
-        } else {
 
-            coffeeMaker.getWarmerPlate().getWarmerPlateSensor().setPotGone(false);
-            coffeeMaker.getWarmerPlate().startWarming();
+        } else if (coffeeMaker.potInteraction().equals("CONTINUE")) {
+
         }
     }
 }

@@ -5,7 +5,7 @@ public class PressureReliefValve {
     private boolean isOpen;
 
     public PressureReliefValve() {
-        isOpen = false;
+        isOpen = true;
     }
 
     public boolean isValveOpen() {
