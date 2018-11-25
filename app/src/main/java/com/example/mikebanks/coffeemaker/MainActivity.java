@@ -6,6 +6,8 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
 
+import com.example.mikebanks.coffeemaker.Model.CoffeeMaker;
+
 public class MainActivity extends AppCompatActivity {
 
     private TextView txtBoilerStatus;
@@ -18,13 +20,15 @@ public class MainActivity extends AppCompatActivity {
     private Button btnStartBrewing;
     private Button btnPot;
 
+    private CoffeeMaker coffeeMaker;
+
     private View.OnClickListener clickListener = new View.OnClickListener() {
         @Override
         public void onClick(View view) {
             if (view.getId() == btnStartBrewing.getId()) {
-
+                startBrewing();
             } else if (view.getId() == btnPot.getId()) {
-
+                potClick();
             }
         }
     };
@@ -33,6 +37,14 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+
+        setupViews();
+
+        coffeeMaker = new CoffeeMaker();
+
+    }
+
+    private void setupViews() {
 
         txtBoilerStatus = findViewById(R.id.txt_boiler_status);
         txtWarmerPlateStatus = findViewById(R.id.txt_plate_status);
@@ -46,6 +58,23 @@ public class MainActivity extends AppCompatActivity {
 
         btnStartBrewing.setOnClickListener(clickListener);
         btnPot.setOnClickListener(clickListener);
+    }
 
+    private void startBrewing() {
+        while (coffeeMaker.getBoiler().getBoilerSensor().getBoilerEmpty() == false) {
+
+        }
+    }
+
+    private void potClick() {
+        if (coffeeMaker.getWarmerPlate().getWarmerPlateSensor().isPotGone() == false) {
+            coffeeMaker.getWarmerPlate().getWarmerPlateSensor().setPotGone(true);
+            coffeeMaker.getWarmerPlate().stopWarming();
+
+        } else {
+
+            coffeeMaker.getWarmerPlate().getWarmerPlateSensor().setPotGone(false);
+            coffeeMaker.getWarmerPlate().startWarming();
+        }
     }
 }
