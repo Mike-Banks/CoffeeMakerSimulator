@@ -171,7 +171,7 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/lbl_pot_msg" />
+        app:layout_constraintTop_toBottomOf="@+id/txt_pot_msg" />
 
     <TextView
         android:id="@+id/txt_brewing_status"
@@ -186,7 +186,7 @@
         app:layout_constraintTop_toBottomOf="@+id/img_coffee_maker" />
 
     <TextView
-        android:id="@+id/lbl_pot_msg"
+        android:id="@+id/txt_pot_msg"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="8dp"

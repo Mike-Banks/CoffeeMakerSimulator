@@ -14,7 +14,7 @@ public class WarmerPlateSensor {
         return potEmpty;
     }
 
-    public void setPotVolume(boolean newPotEmpty) {
+    public void setPotEmpty(boolean newPotEmpty) {
         potEmpty = newPotEmpty;
     }
 

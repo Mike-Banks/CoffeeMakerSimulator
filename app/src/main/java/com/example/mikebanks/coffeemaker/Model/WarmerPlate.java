@@ -10,6 +10,10 @@ public class WarmerPlate {
         heatingPower = false;
     }
 
+    public WarmerPlateSensor getWarmerPlateSensor() {
+        return warmerPlateSensor;
+    }
+
     public void startWarming() {
         heatingPower = true;
     }

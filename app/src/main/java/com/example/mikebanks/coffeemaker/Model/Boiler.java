@@ -10,6 +10,10 @@ public class Boiler {
         heatingPower = false;
     }
 
+    public BoilerSensor getBoilerSensor() {
+        return boilerSensor;
+    }
+
     public void startBoiling() {
         if (boilerSensor.getBoilerEmpty() == true) {
             heatingPower = true;

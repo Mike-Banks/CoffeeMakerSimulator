@@ -8,8 +8,6 @@ import android.widget.TextView;
 
 import com.example.mikebanks.coffeemaker.Model.CoffeeMaker;
 
-import java.util.concurrent.TimeUnit;
-
 public class MainActivity extends AppCompatActivity {
 
     private TextView txtBoilerStatus;
@@ -17,6 +15,7 @@ public class MainActivity extends AppCompatActivity {
     private TextView txtPressureReliefValveStatus;
     private TextView txtPotStatus;
     private TextView txtBrewingStatus;
+    private TextView txtPotMessage;
     private TextView txtMessage;
 
     private Button btnStartBrewing;
@@ -28,7 +27,12 @@ public class MainActivity extends AppCompatActivity {
         @Override
         public void onClick(View view) {
             if (view.getId() == btnStartBrewing.getId()) {
-                startBrewing();
+                try {
+                    startBrewing();
+                } catch (InterruptedException e) {
+                    e.printStackTrace();
+                }
+
             } else if (view.getId() == btnPot.getId()) {
                 potClick();
             }
@@ -53,6 +57,7 @@ public class MainActivity extends AppCompatActivity {
         txtPressureReliefValveStatus = findViewById(R.id.txt_valve_status);
         txtPotStatus = findViewById(R.id.txt_pot_status);
         txtBrewingStatus = findViewById(R.id.txt_brewing_status);
+        txtPotMessage = findViewById(R.id.txt_pot_msg);
         txtMessage = findViewById(R.id.txt_message);
 
         btnStartBrewing = findViewById(R.id.btn_start_brewing);
@@ -60,6 +65,8 @@ public class MainActivity extends AppCompatActivity {
 
         btnStartBrewing.setOnClickListener(clickListener);
         btnPot.setOnClickListener(clickListener);
+
+        txtMessage.setText("CLICK THE BUTTON TO START BREWING");
     }
 
     private void startBrewing() throws InterruptedException {
@@ -68,10 +75,18 @@ public class MainActivity extends AppCompatActivity {
 
     private void potClick() {
         if (coffeeMaker.potInteraction().equals("STOP")) {
-
+            txtWarmerPlateStatus.setText("OFF");
+            txtPotStatus.setText("NO POT");
+            txtPressureReliefValveStatus.setText("OPEN");
+            txtPotMessage.setText("CLICK POT TO RETURN IT TO COFFEE MAKER");
+            txtMessage.setText("BREWING STOPPED");
 
         } else if (coffeeMaker.potInteraction().equals("CONTINUE")) {
-
+            txtWarmerPlateStatus.setText("ON");
+            txtPotStatus.setText("POT DETECTED");
+            txtPressureReliefValveStatus.setText("CLOSED");
+            txtPotMessage.setText("CLICK POT TO REMOVE IT TO COFFEE MAKER");
+            txtMessage.setText("BREWING RESUMED");
         }
     }
 }

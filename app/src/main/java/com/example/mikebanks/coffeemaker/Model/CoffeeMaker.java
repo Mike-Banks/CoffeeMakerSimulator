@@ -26,16 +26,38 @@ public class CoffeeMaker {
         return pressureReliefValve;
     }
 
+    /**
+     * Method that runs when the brewing cycle is started
+     * @throws InterruptedException - this is involved when using the 'Sleep' method in the 'TimeUnit' package
+     */
     public void startBrewing() throws InterruptedException {
-        while (getBoiler().getBoilerSensor().getBoilerEmpty() == false) {
-            getBoiler().startBoiling();
-            getPressureReliefValve().closeValve();
 
-            TimeUnit.SECONDS.sleep(5);
-            getWarmerPlate().startWarming();
+        //if there is water present
+        if (getBoiler().getBoilerSensor().getBoilerEmpty() == false) {
+
+            //if the pot is on the machine
+            if (getWarmerPlate().getWarmerPlateSensor().isPotGone() == false) {
+
+                //start boiling the water, and close the pressure relief valve
+                getBoiler().startBoiling();
+                getPressureReliefValve().closeValve();
+
+                //wait and let the water boil
+                TimeUnit.SECONDS.sleep(5);
+
+                //the water has now boiled, the steam is being sprayed on the grounds, coffee is dripping into the pot (pot no longer empty)
+                getWarmerPlate().getWarmerPlateSensor().setPotEmpty(false);
+
+                //the plate will now start warming, as the pot is not empty
+                getWarmerPlate().startWarming();
+            }
         }
     }
 
+    /**
+     *
+     * @return
+     */
     public String potInteraction() {
         if (getWarmerPlate().getWarmerPlateSensor().isPotGone() == false) {
             getWarmerPlate().getWarmerPlateSensor().setPotGone(true);
