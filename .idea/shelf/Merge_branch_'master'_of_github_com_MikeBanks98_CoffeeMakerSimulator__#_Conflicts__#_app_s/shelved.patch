@@ -1,0 +1,186 @@
+Index: app/src/main/java/com/example/mikebanks/coffeemaker/MainActivity.java
+===================================================================
+--- app/src/main/java/com/example/mikebanks/coffeemaker/MainActivity.java	(date 1543184094000)
++++ app/src/main/java/com/example/mikebanks/coffeemaker/MainActivity.java	(date 1543184094000)
+@@ -1,59 +0,0 @@
+-package com.example.mikebanks.coffeemaker;
+-
+-import android.support.v7.app.AppCompatActivity;
+-import android.os.Bundle;
+-import android.view.View;
+-import android.widget.Button;
+-import android.widget.TextView;
+-
+-public class MainActivity extends AppCompatActivity {
+-
+-
+-    // field vars for the text views
+-    private TextView txtBoilerStatus;
+-    private TextView txtWarmerPlateStatus;
+-    private TextView txtPressureReliefValveStatus;
+-    private TextView txtPotStatus;
+-    private TextView txtBrewingStatus;
+-    private TextView txtMessage;
+-
+-
+-    private Button btnStartBrewing;
+-    private Button btnPot;
+-
+-    // listener for the start brewing button
+-    private View.OnClickListener clickListener = new View.OnClickListener() {
+-        @Override
+-        public void onClick(View view) {
+-            // check if the brew btn is pressed
+-            if (view.getId() == btnStartBrewing.getId()) {
+-
+-                // check if its not pressed
+-            } else if (view.getId() == btnPot.getId()) {
+-
+-            }
+-        }
+-    };
+-
+-    @Override
+-    protected void onCreate(Bundle savedInstanceState) {
+-        super.onCreate(savedInstanceState);
+-        setContentView(R.layout.activity_main);
+-
+-        // set references to the text boxes
+-        txtBoilerStatus = findViewById(R.id.txt_boiler_status);
+-        txtWarmerPlateStatus = findViewById(R.id.txt_plate_status);
+-        txtPressureReliefValveStatus = findViewById(R.id.txt_valve_status);
+-        txtPotStatus = findViewById(R.id.txt_pot_status);
+-        txtBrewingStatus = findViewById(R.id.txt_brewing_status);
+-        txtMessage = findViewById(R.id.txt_message);
+-
+-        // set references to the btns
+-        btnStartBrewing = findViewById(R.id.btn_start_brewing);
+-        btnPot = findViewById(R.id.btn_pot);
+-
+-        btnStartBrewing.setOnClickListener(clickListener);
+-        btnPot.setOnClickListener(clickListener);
+-
+-    }
+-}
+Index: app/src/main/java/com/example/mikebanks/coffeemaker/Model/PressureReliefValve.java
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+<+>package com.example.mikebanks.coffeemaker.Model;\n\npublic class PressureReliefValve {\n}\n
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+--- app/src/main/java/com/example/mikebanks/coffeemaker/Model/PressureReliefValve.java	(date 1543184094000)
++++ app/src/main/java/com/example/mikebanks/coffeemaker/Model/PressureReliefValve.java	(date 1543184117851)
+@@ -1,4 +1,23 @@
+ package com.example.mikebanks.coffeemaker.Model;
+ 
+ public class PressureReliefValve {
++
++    private boolean isOpen;
++
++    public PressureReliefValve() {
++        isOpen = false;
++    }
++
++    public boolean isValveOpen() {
++        return isOpen;
++    }
++
++    public void openValve() {
++        isOpen = true;
++    }
++
++    public void closeValve() {
++        isOpen = false;
++    }
++
+ }
+Index: app/src/main/java/com/example/mikebanks/coffeemaker/Model/Boiler.java
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+<+>package com.example.mikebanks.coffeemaker.Model;\n\npublic class Boiler {\n\n    private BoilerSensor boilerSensor;\n    private boolean heatingPower;\n\n    public Boiler() {\n        boilerSensor = new BoilerSensor();\n        heatingPower = false;\n    }\n\n    public void startBoiling() {\n        if (boilerSensor.getBoilerEmpty() == true) {\n            heatingPower = true;\n        }\n    }\n\n    public void stopBoiling() {\n        if (boilerSensor.getBoilerEmpty() == false) {\n            heatingPower = false;\n        }\n    }\n}\n
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+--- app/src/main/java/com/example/mikebanks/coffeemaker/Model/Boiler.java	(date 1543184094000)
++++ app/src/main/java/com/example/mikebanks/coffeemaker/Model/Boiler.java	(date 1543184117842)
+@@ -10,6 +10,9 @@
+         heatingPower = false;
+     }
+ 
++    public BoilerSensor getBoilerSensor() {
++        return boilerSensor;
++    }
+     public void startBoiling() {
+         if (boilerSensor.getBoilerEmpty() == true) {
+             heatingPower = true;
+Index: app/src/main/java/com/example/mikebanks/coffeemaker/Model/CoffeeMaker.java
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+<+>package com.example.mikebanks.coffeemaker.Model;\n\npublic class CoffeeMaker {\n}\n
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+--- app/src/main/java/com/example/mikebanks/coffeemaker/Model/CoffeeMaker.java	(date 1543184094000)
++++ app/src/main/java/com/example/mikebanks/coffeemaker/Model/CoffeeMaker.java	(date 1543184117846)
+@@ -1,4 +1,25 @@
+ package com.example.mikebanks.coffeemaker.Model;
+ 
+ public class CoffeeMaker {
++
++    private Boiler boiler;
++    private WarmerPlate warmerPlate;
++    private PressureReliefValve pressureReliefValve;
++
++    public CoffeeMaker() {
++        boiler = new Boiler();
++        warmerPlate = new WarmerPlate();
++        pressureReliefValve = new PressureReliefValve();
++    }
++
++    public Boiler getBoiler() {
++        return boiler;
++    }
++    public WarmerPlate getWarmerPlate() {
++        return warmerPlate;
++    }
++    public PressureReliefValve getPressureReliefValve() {
++        return pressureReliefValve;
++    }
++
+ }
+Index: app/src/main/java/com/example/mikebanks/coffeemaker/Model/WarmerPlate.java
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+<+>package com.example.mikebanks.coffeemaker.Model;\n\npublic class WarmerPlate {\n\n    private WarmerPlateSensor warmerPlateSensor;\n    private boolean heatingPower;\n\n    public WarmerPlate() {\n        warmerPlateSensor = new WarmerPlateSensor();\n        heatingPower = false;\n    }\n\n    public void startWarming() {\n        heatingPower = true;\n    }\n\n    public void stopWarming() {\n        heatingPower = false;\n    }\n}\n
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+--- app/src/main/java/com/example/mikebanks/coffeemaker/Model/WarmerPlate.java	(date 1543184094000)
++++ app/src/main/java/com/example/mikebanks/coffeemaker/Model/WarmerPlate.java	(date 1543184117855)
+@@ -10,6 +10,10 @@
+         heatingPower = false;
+     }
+ 
++    public WarmerPlateSensor getWarmerPlateSensor() {
++        return warmerPlateSensor;
++    }
++
+     public void startWarming() {
+         heatingPower = true;
+     }
+@@ -17,4 +21,14 @@
+     public void stopWarming() {
+         heatingPower = false;
+     }
++
++    public void removePot() {
++        warmerPlateSensor.setPotGone(true);
++    }
++    public void addPot() {
++        warmerPlateSensor.setPotGone(false);
++    }
++    public void addContents() {
++        warmerPlateSensor.setPotVolume(false);
++    }
+ }
