@@ -34,25 +34,14 @@
 
     <Button
         android:id="@+id/btn_start_brewing"
-        android:layout_width="83dp"
-        android:layout_height="53dp"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
         android:layout_marginStart="8dp"
         android:layout_marginTop="12dp"
         android:layout_marginEnd="8dp"
-        android:background="@drawable/brew_button"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.028"
+        android:text="START"
+        app:layout_constraintEnd_toStartOf="@+id/txt_brewing_status"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/img_coffee_maker" />
-
-    <Button
-        android:id="@+id/btn_pot"
-        android:layout_width="80dp"
-        android:layout_height="53dp"
-        android:layout_marginTop="12dp"
-        android:layout_marginEnd="8dp"
-        android:background="@drawable/pot"
-        app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/img_coffee_maker" />
 
     <TextView
@@ -117,7 +106,7 @@
         android:layout_marginStart="8dp"
         android:layout_marginTop="8dp"
         android:layout_marginEnd="8dp"
-        android:text="BOILER OFF"
+        android:text="OFF"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toEndOf="@+id/img_coffee_maker"
         app:layout_constraintTop_toBottomOf="@+id/lbl_boiler" />
@@ -129,7 +118,7 @@
         android:layout_marginStart="8dp"
         android:layout_marginTop="8dp"
         android:layout_marginEnd="8dp"
-        android:text="PLATE OFF"
+        android:text="OFF"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toEndOf="@+id/img_coffee_maker"
         app:layout_constraintTop_toBottomOf="@+id/lbl_warmer_plate" />
@@ -141,7 +130,7 @@
         android:layout_marginStart="8dp"
         android:layout_marginTop="8dp"
         android:layout_marginEnd="8dp"
-        android:text="VALVE CLOSED"
+        android:text="CLOSED"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toEndOf="@+id/img_coffee_maker"
         app:layout_constraintTop_toBottomOf="@+id/lbl_valve" />
@@ -153,7 +142,7 @@
         android:layout_marginStart="8dp"
         android:layout_marginTop="8dp"
         android:layout_marginEnd="8dp"
-        android:text="POT IN PLACE"
+        android:text="POT DETECTED"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toEndOf="@+id/img_coffee_maker"
         app:layout_constraintTop_toBottomOf="@+id/lbl_pot_status" />
@@ -171,7 +160,7 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/txt_pot_msg" />
+        app:layout_constraintTop_toBottomOf="@+id/btn_resume" />
 
     <TextView
         android:id="@+id/txt_brewing_status"
@@ -179,22 +168,36 @@
         android:layout_height="wrap_content"
         android:layout_marginStart="8dp"
         android:layout_marginTop="12dp"
+        android:layout_marginEnd="28dp"
         android:layout_marginBottom="8dp"
         android:text="    "
         app:layout_constraintBottom_toBottomOf="@+id/btn_start_brewing"
+        app:layout_constraintEnd_toStartOf="@+id/btn_resume"
         app:layout_constraintStart_toEndOf="@+id/btn_start_brewing"
         app:layout_constraintTop_toBottomOf="@+id/img_coffee_maker" />
 
-    <TextView
-        android:id="@+id/txt_pot_msg"
+    <Button
+        android:id="@+id/btn_resume"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="8dp"
-        android:layout_marginTop="8dp"
+        android:layout_marginTop="12dp"
         android:layout_marginEnd="8dp"
-        android:text="CLICK POT TO REMOVE IT FROM COFFEE MAKER"
+        android:text="RESUME"
+        app:layout_constraintEnd_toStartOf="@+id/btn_pot"
+        app:layout_constraintStart_toEndOf="@+id/txt_brewing_status"
+        app:layout_constraintTop_toBottomOf="@+id/img_coffee_maker" />
+
+    <Button
+        android:id="@+id/btn_pot"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="12dp"
+        android:layout_marginEnd="8dp"
+        android:text="REMOVE POT"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/btn_pot" />
+        app:layout_constraintStart_toEndOf="@+id/btn_resume"
+        app:layout_constraintTop_toBottomOf="@+id/img_coffee_maker" />
 
 </android.support.constraint.ConstraintLayout>

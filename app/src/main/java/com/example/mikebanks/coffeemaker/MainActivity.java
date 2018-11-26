@@ -24,7 +24,6 @@ public class MainActivity extends AppCompatActivity {
     private Button btnPot;
 
     private CoffeeMaker coffeeMaker;
-    private Timer brewingTimer;
 
     private View.OnClickListener clickListener = new View.OnClickListener() {
         @Override
@@ -50,7 +49,6 @@ public class MainActivity extends AppCompatActivity {
         setupViews();
 
         coffeeMaker = new CoffeeMaker();
-        brewingTimer = new Timer();
 
     }
 
@@ -80,7 +78,7 @@ public class MainActivity extends AppCompatActivity {
     private void startBrewing() throws InterruptedException {
 
         //start boiling the water
-        if (coffeeMaker.startBoiling() == "BOILING WITH POT") {
+        if (coffeeMaker.startBoiling().equals("BOILING WITH POT")) {
 
             //update UI
             txtBoilerStatus.setText("BOILING");
@@ -91,39 +89,46 @@ public class MainActivity extends AppCompatActivity {
             TimeUnit.SECONDS.sleep(5);
 
             //the water is spraying on the grounds after boiling, coffee is dripping into the pot, call the warming method
-            if (coffeeMaker.startWarming() == "WARMING") {
+            if (coffeeMaker.startWarming().equals("WARMING")) {
 
                 txtWarmerPlateStatus.setText("WARMING");
                 txtMessage.setText("THERE IS COFFEE IN THE POT");
             }
 
 
-        } else if (coffeeMaker.startBoiling() == "BOILING NO POT") {
+        } else if (coffeeMaker.startBoiling().equals("BOILING NO POT")) {
             //boil water, valve stays open, inform user to add the pot
 
             txtBoilerStatus.setText("BOILING");
 
             txtMessage.setText("RETURN THE POT SO THAT THE WATER CAN PROPERLY BOIL");
 
-        } else if (coffeeMaker.startBoiling() == "NOT BOILING") {
+        } else if (coffeeMaker.startBoiling().equals("NOT BOILING")) {
 
             txtMessage.setText("NO WATER IN STRAINER. PLEASE ADD");
         }
     }
 
     private void potClick() {
-        if (coffeeMaker.potInteraction().equals("STOP")) {
+
+        String result = coffeeMaker.potInteraction();
+
+        if (result.equals("STOP")) {
             txtWarmerPlateStatus.setText("OFF");
             txtPotStatus.setText("NO POT");
             txtPressureReliefValveStatus.setText("OPEN");
             txtPotMessage.setText("CLICK POT TO RETURN IT TO COFFEE MAKER");
             txtMessage.setText("BREWING STOPPED");
 
-        } else if (coffeeMaker.potInteraction().equals("CONTINUE")) {
-            txtWarmerPlateStatus.setText("ON");
+        } else if (result.equals("CONTINUE")) {
+
+            if (coffeeMaker.getWarmerPlate().getWarmerPlateSensor().isPotEmpty() == false) {
+                txtWarmerPlateStatus.setText("ON");
+            }
             txtPotStatus.setText("POT DETECTED");
             txtPressureReliefValveStatus.setText("CLOSED");
             txtPotMessage.setText("CLICK POT TO REMOVE IT TO COFFEE MAKER");
+
             txtMessage.setText("BREWING RESUMED");
         }
     }
