@@ -29,30 +29,61 @@ public class CoffeeMaker {
 
     /**
      * Method that runs when the brewing cycle is started
-     * @throws InterruptedException - this is involved when using the 'Sleep' method in the 'TimeUnit' package
      */
-    public void startBrewing() throws InterruptedException {
+    public String startWarming() {
+
+        //if the pot is on the machine, and it is not empty
+        if (getWarmerPlate().getWarmerPlateSensor().isPotGone() == false) {
+
+            getPressureReliefValve().closeValve();
+
+            //the water has now boiled, the steam is being sprayed on the grounds, coffee is dripping into the pot (pot no longer empty)
+            getWarmerPlate().getWarmerPlateSensor().setPotEmpty(false);
+
+            //the plate will now start warming, as the pot is not empty
+            getWarmerPlate().startWarming();
+
+            return "WARMING";
+
+        } else {
+
+            getWarmerPlate().stopWarming();
+            getPressureReliefValve().openValve();
+
+            return "NOT WARMING";
+
+        }
+    }
+
+    public String startBoiling() {
+
+        String returnMsg;
 
         //if there is water present
         if (getBoiler().getBoilerSensor().getBoilerEmpty() == false) {
 
+            //start boiling the water
+            getBoiler().startBoiling();
+
             //if the pot is on the machine
             if (getWarmerPlate().getWarmerPlateSensor().isPotGone() == false) {
 
-                //start boiling the water, and close the pressure relief valve
-                getBoiler().startBoiling();
+                //close the pressure relief valve
                 getPressureReliefValve().closeValve();
 
-                //wait and let the water boil
-                TimeUnit.SECONDS.sleep(5);
+                returnMsg = "BOILING WITH POT";
+            } else {
 
-                //the water has now boiled, the steam is being sprayed on the grounds, coffee is dripping into the pot (pot no longer empty)
-                getWarmerPlate().getWarmerPlateSensor().setPotEmpty(false);
+                getPressureReliefValve().openValve();
 
-                //the plate will now start warming, as the pot is not empty
-                getWarmerPlate().startWarming();
+                returnMsg = "BOILING NO POT";
             }
+
+            return returnMsg;
+
         }
+
+        return "NOT BOILING";
     }
 
     /**

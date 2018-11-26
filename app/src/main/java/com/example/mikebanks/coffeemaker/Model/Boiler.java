@@ -15,14 +15,10 @@ public class Boiler {
     }
 
     public void startBoiling() {
-        if (boilerSensor.getBoilerEmpty() == true) {
-            heatingPower = true;
-        }
+        heatingPower = true;
     }
 
     public void stopBoiling() {
-        if (boilerSensor.getBoilerEmpty() == false) {
-            heatingPower = false;
-        }
+      heatingPower = false;
     }
 }
