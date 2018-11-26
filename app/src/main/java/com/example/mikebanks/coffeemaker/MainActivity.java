@@ -17,13 +17,13 @@ public class MainActivity extends AppCompatActivity {
     private TextView txtWarmerPlateStatus;
     private TextView txtPressureReliefValveStatus;
     private TextView txtPotStatus;
-    private TextView txtBrewingStatus;
     private TextView txtPotMessage;
     private TextView txtMessage;
     private Button btnStartBrewing;
     private Button btnPot;
 
     private CoffeeMaker coffeeMaker;
+    private boolean processStarted;
 
     private View.OnClickListener clickListener = new View.OnClickListener() {
         @Override
@@ -49,6 +49,7 @@ public class MainActivity extends AppCompatActivity {
         setupViews();
 
         coffeeMaker = new CoffeeMaker();
+        processStarted = false;
 
     }
 
@@ -58,8 +59,6 @@ public class MainActivity extends AppCompatActivity {
         txtWarmerPlateStatus = findViewById(R.id.txt_plate_status);
         txtPressureReliefValveStatus = findViewById(R.id.txt_valve_status);
         txtPotStatus = findViewById(R.id.txt_pot_status);
-        txtBrewingStatus = findViewById(R.id.txt_brewing_status);
-        txtPotMessage = findViewById(R.id.txt_pot_msg);
         txtMessage = findViewById(R.id.txt_message);
 
         btnStartBrewing = findViewById(R.id.btn_start_brewing);
@@ -77,8 +76,11 @@ public class MainActivity extends AppCompatActivity {
      */
     private void startBrewing() throws InterruptedException {
 
-        //start boiling the water
-        if (coffeeMaker.startBoiling().equals("BOILING WITH POT")) {
+        processStarted = true;
+
+        String boilingResult = coffeeMaker.startBoiling();
+
+        if (boilingResult.equals("BOILING WITH POT")) {
 
             //update UI
             txtBoilerStatus.setText("BOILING");
@@ -96,14 +98,14 @@ public class MainActivity extends AppCompatActivity {
             }
 
 
-        } else if (coffeeMaker.startBoiling().equals("BOILING NO POT")) {
+        } else if (boilingResult.equals("BOILING NO POT")) {
             //boil water, valve stays open, inform user to add the pot
 
             txtBoilerStatus.setText("BOILING");
 
             txtMessage.setText("RETURN THE POT SO THAT THE WATER CAN PROPERLY BOIL");
 
-        } else if (coffeeMaker.startBoiling().equals("NOT BOILING")) {
+        } else if (boilingResult.equals("NOT BOILING")) {
 
             txtMessage.setText("NO WATER IN STRAINER. PLEASE ADD");
         }
@@ -117,8 +119,13 @@ public class MainActivity extends AppCompatActivity {
             txtWarmerPlateStatus.setText("OFF");
             txtPotStatus.setText("NO POT");
             txtPressureReliefValveStatus.setText("OPEN");
-            txtPotMessage.setText("CLICK POT TO RETURN IT TO COFFEE MAKER");
-            txtMessage.setText("BREWING STOPPED");
+
+            btnPot.setText("RETURN POT");
+            if (processStarted == true) {
+                txtMessage.setText("BREWING STOPPED");
+            } else {
+                txtMessage.setText("NO POT IN THE COFFEE MAKER");
+            }
 
         } else if (result.equals("CONTINUE")) {
 
@@ -127,9 +134,15 @@ public class MainActivity extends AppCompatActivity {
             }
             txtPotStatus.setText("POT DETECTED");
             txtPressureReliefValveStatus.setText("CLOSED");
-            txtPotMessage.setText("CLICK POT TO REMOVE IT TO COFFEE MAKER");
 
-            txtMessage.setText("BREWING RESUMED");
+            btnPot.setText("REMOVE POT");
+
+            if (processStarted == true) {
+                txtMessage.setText("BREWING RESUMED");
+            } else {
+                txtMessage.setText("CLICK THE BUTTON TO START BREWING");
+            }
         }
     }
+
 }

@@ -17,8 +17,4 @@ public class Boiler {
     public void startBoiling() {
         heatingPower = true;
     }
-
-    public void stopBoiling() {
-      heatingPower = false;
-    }
 }
