@@ -150,13 +150,13 @@
     <TextView
         android:id="@+id/txt_message"
         android:layout_width="0dp"
-        android:layout_height="0dp"
+        android:layout_height="wrap_content"
         android:layout_marginStart="8dp"
         android:layout_marginTop="8dp"
         android:layout_marginEnd="8dp"
-        android:layout_marginBottom="8dp"
+        android:text="CLICK BUTTON TO START"
         android:textAlignment="center"
-        app:layout_constraintBottom_toBottomOf="parent"
+        android:textAppearance="@android:style/TextAppearance.Holo.Large"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
@@ -168,9 +168,11 @@
         android:layout_height="wrap_content"
         android:layout_marginStart="8dp"
         android:layout_marginTop="12dp"
+        android:layout_marginEnd="8dp"
         android:layout_marginBottom="8dp"
         android:text="    "
         app:layout_constraintBottom_toBottomOf="@+id/btn_start_brewing"
+        app:layout_constraintEnd_toStartOf="@+id/btn_status"
         app:layout_constraintStart_toEndOf="@+id/btn_start_brewing"
         app:layout_constraintTop_toBottomOf="@+id/img_coffee_maker" />
 
@@ -178,10 +180,24 @@
         android:id="@+id/btn_pot"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_marginStart="8dp"
         android:layout_marginTop="12dp"
         android:layout_marginEnd="8dp"
         android:text="REMOVE POT"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toEndOf="@+id/btn_status"
+        app:layout_constraintTop_toBottomOf="@+id/img_coffee_maker" />
+
+    <Button
+        android:id="@+id/btn_status"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="12dp"
+        android:layout_marginEnd="8dp"
+        android:text="CHECK STATUS"
+        app:layout_constraintEnd_toStartOf="@+id/btn_pot"
+        app:layout_constraintStart_toEndOf="@+id/txt_brewing_status"
         app:layout_constraintTop_toBottomOf="@+id/img_coffee_maker" />
 
 </android.support.constraint.ConstraintLayout>

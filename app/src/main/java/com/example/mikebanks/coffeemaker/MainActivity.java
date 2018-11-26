@@ -1,5 +1,6 @@
 package com.example.mikebanks.coffeemaker;
 
+import android.graphics.Color;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
@@ -17,14 +18,15 @@ public class MainActivity extends AppCompatActivity {
     private TextView txtWarmerPlateStatus;
     private TextView txtPressureReliefValveStatus;
     private TextView txtPotStatus;
-    private TextView txtPotMessage;
+    private TextView txtBrewingIndicator;
     private TextView txtMessage;
     private Button btnStartBrewing;
+    private Button btnStatus;
     private Button btnPot;
 
     private CoffeeMaker coffeeMaker;
     private boolean processStarted;
-    private boolean coffeeMade;
+    private long processStartTime;
     private boolean coffeeFinished;
 
     private View.OnClickListener clickListener = new View.OnClickListener() {
@@ -32,6 +34,7 @@ public class MainActivity extends AppCompatActivity {
         public void onClick(View view) {
             if (view.getId() == btnStartBrewing.getId()) {
                 try {
+                    txtMessage.setText("STARTING");
                     startBrewing();
                 } catch (InterruptedException e) {
                     e.printStackTrace();
@@ -43,6 +46,8 @@ public class MainActivity extends AppCompatActivity {
                 } catch (InterruptedException e) {
                     e.printStackTrace();
                 }
+            } else if (view.getId() == btnStatus.getId()) {
+                checkCoffeeStatus();
             }
         }
     };
@@ -65,12 +70,15 @@ public class MainActivity extends AppCompatActivity {
         txtWarmerPlateStatus = findViewById(R.id.txt_plate_status);
         txtPressureReliefValveStatus = findViewById(R.id.txt_valve_status);
         txtPotStatus = findViewById(R.id.txt_pot_status);
+        txtBrewingIndicator = findViewById(R.id.txt_brewing_status);
         txtMessage = findViewById(R.id.txt_message);
 
         btnStartBrewing = findViewById(R.id.btn_start_brewing);
+        btnStatus = findViewById(R.id.btn_status);
         btnPot = findViewById(R.id.btn_pot);
 
         btnStartBrewing.setOnClickListener(clickListener);
+        btnStatus.setOnClickListener(clickListener);
         btnPot.setOnClickListener(clickListener);
 
         txtMessage.setText("CLICK THE BUTTON TO START BREWING");
@@ -83,6 +91,7 @@ public class MainActivity extends AppCompatActivity {
     private void startBrewing() throws InterruptedException {
 
         processStarted = true;
+        processStartTime = System.currentTimeMillis();
 
         String boilingResult = coffeeMaker.startBoiling();
 
@@ -94,7 +103,7 @@ public class MainActivity extends AppCompatActivity {
             txtPotStatus.setText("POT DETECTED");
 
             //wait and let the water boil
-            TimeUnit.SECONDS.sleep(5);
+            TimeUnit.SECONDS.sleep(3);
 
             //the water is spraying on the grounds after boiling, coffee is dripping into the pot, call the warming method
             if (coffeeMaker.startWarming().equals("WARMING")) {
@@ -115,6 +124,31 @@ public class MainActivity extends AppCompatActivity {
 
             txtMessage.setText("NO WATER IN STRAINER. PLEASE ADD");
         }
+
+
+    }
+
+
+    private void checkCoffeeStatus() {
+        if (processStarted == true && coffeeMaker.getWarmerPlate().getWarmerPlateSensor().isPotGone() == false) {
+            long currentTime = System.currentTimeMillis();
+            long value = currentTime - processStartTime;
+            if (currentTime - processStartTime > 20000) {
+                coffeeFinished = true;
+                txtMessage.setText("COFFEE FINISHED");
+
+                txtBrewingIndicator.setBackgroundColor(Color.GREEN);
+                txtBoilerStatus.setText("FINISHED");
+                txtWarmerPlateStatus.setText("WARMING");
+                txtPotStatus.setText("FULL");
+                txtPressureReliefValveStatus.setText("CLOSED");
+            } else {
+                txtMessage.setText("COFFEE STILL BEING MADE");
+            }
+        } else {
+            txtMessage.setText("Update Unavailable");
+        }
+
     }
 
     private void potClick() throws InterruptedException {
@@ -145,7 +179,8 @@ public class MainActivity extends AppCompatActivity {
 
             if (processStarted == true) {
                 txtMessage.setText("BREWING RESUMED");
-                if (coffeeMade == true) {
+                String resumeResult = coffeeMaker.resumeBrewing();
+                if (resumeResult.equals("RESUME BREWING")) {
                     txtWarmerPlateStatus.setText("WARMING");
                 } else {
                     startBrewing();
