@@ -24,6 +24,8 @@ public class MainActivity extends AppCompatActivity {
 
     private CoffeeMaker coffeeMaker;
     private boolean processStarted;
+    private boolean coffeeMade;
+    private boolean coffeeFinished;
 
     private View.OnClickListener clickListener = new View.OnClickListener() {
         @Override
@@ -36,7 +38,11 @@ public class MainActivity extends AppCompatActivity {
                 }
 
             } else if (view.getId() == btnPot.getId()) {
-                potClick();
+                try {
+                    potClick();
+                } catch (InterruptedException e) {
+                    e.printStackTrace();
+                }
             }
         }
     };
@@ -111,7 +117,7 @@ public class MainActivity extends AppCompatActivity {
         }
     }
 
-    private void potClick() {
+    private void potClick() throws InterruptedException {
 
         String result = coffeeMaker.potInteraction();
 
@@ -139,6 +145,11 @@ public class MainActivity extends AppCompatActivity {
 
             if (processStarted == true) {
                 txtMessage.setText("BREWING RESUMED");
+                if (coffeeMade == true) {
+                    txtWarmerPlateStatus.setText("WARMING");
+                } else {
+                    startBrewing();
+                }
             } else {
                 txtMessage.setText("CLICK THE BUTTON TO START BREWING");
             }

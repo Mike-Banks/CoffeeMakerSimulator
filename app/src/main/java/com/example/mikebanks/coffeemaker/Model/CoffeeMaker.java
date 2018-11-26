@@ -86,6 +86,13 @@ public class CoffeeMaker {
         return "NOT BOILING";
     }
 
+    public String resumeBrewing() {
+        if (getWarmerPlate().getWarmerPlateSensor().isPotEmpty() == false) {
+            return "RESUME BREWING";
+        } else {
+            return "RESTART BREWING";
+        }
+    }
     /**
      * Method that determines what to do when the user interacts with the pot
      * @return a string that shows whether the brewing process is continuing or stopping
